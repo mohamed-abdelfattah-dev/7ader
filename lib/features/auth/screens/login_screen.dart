@@ -12,10 +12,6 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
- 
-
- 
-
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -69,19 +65,41 @@ class _LoginScreenState extends State<LoginScreen> {
     String getStr(String key) => loc?.get(key) ?? key;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.scaffoldBackground,
       body: Stack(
         children: [
-          // Background Gradient decoration
+          // Background Decorative Gradients
           Positioned(
-            top: -150,
-            left: -150,
+            top: -100,
+            right: -100,
             child: Container(
-              width: 400,
-              height: 400,
+              width: 300,
+              height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primary.withOpacity(0.05),
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.primary.withOpacity(0.15),
+                    AppColors.primary.withOpacity(0.01),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: -50,
+            left: -50,
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.secondary.withOpacity(0.1),
+                    AppColors.secondary.withOpacity(0.01),
+                  ],
+                ),
               ),
             ),
           ),
@@ -96,41 +114,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 40),
-                    // Branding Icon
+                    const SizedBox(height: 60),
+                    // Branding Icon with soft shadow
                     Center(
                       child: Container(
-                        height: 100,
-                        width: 100,
+                        height: 110,
+                        width: 110,
                         decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(35),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.primary.withOpacity(0.3),
-                              blurRadius: 20,
-                              offset: const Offset(0, 10),
+                              color: AppColors.primary.withOpacity(0.15),
+                              blurRadius: 30,
+                              offset: const Offset(0, 15),
                             ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.shopping_bag_rounded,
-                          size: 50,
-                          color: Colors.white,
+                        child: Container(
+                          margin: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Icon(
+                            Icons.shopping_bag_rounded,
+                            size: 35,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 50),
                     Text(
                       getStr('welcome_back') == 'welcome_back'
                           ? 'مرحباً بعودتك'
                           : getStr('welcome_back'),
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: -1,
-                      ),
+                      style: Theme.of(context).textTheme.headlineLarge,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
@@ -138,10 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       getStr('login_continue') == 'login_continue'
                           ? 'سجل دخولك للمتابعة معنا'
                           : getStr('login_continue'),
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 60),
@@ -151,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: getStr('email') == 'email'
                           ? 'البريد الإلكتروني'
                           : getStr('email'),
-                      icon: Icons.email_outlined,
+                      icon: Icons.email_rounded,
                       hint: 'example@mail.com',
                       keyboardType: TextInputType.emailAddress,
                     ),
@@ -161,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: getStr('password') == 'password'
                           ? 'كلمة المرور'
                           : getStr('password'),
-                      icon: Icons.lock_outline_rounded,
+                      icon: Icons.lock_rounded,
                       hint: '••••••••',
                       isPassword: true,
                     ),
@@ -175,10 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           getStr('forgot_password') == 'forgot_password'
                               ? 'نسيت كلمة المرور؟'
                               : getStr('forgot_password'),
-                          style: const TextStyle(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -186,14 +200,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     ElevatedButton(
                       onPressed: _isLoading ? null : _login,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: 0,
-                      ),
                       child: _isLoading
                           ? const SizedBox(
                               height: 24,
@@ -207,11 +213,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               getStr('login') == 'login'
                                   ? 'تسجيل الدخول'
                                   : getStr('login'),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
                             ),
                     ),
                     const SizedBox(height: 32),
@@ -223,8 +224,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           getStr('dont_have_account') == 'dont_have_account'
                               ? 'ليس لديك حساب؟'
                               : getStr('dont_have_account'),
-                          style: const TextStyle(
-                            color: AppColors.textSecondary,
+                          style: TextStyle(
+                            color: AppColors.textSecondary.withOpacity(0.8),
                           ),
                         ),
                         TextButton(
@@ -240,10 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             getStr('signup') == 'signup'
                                 ? 'إنشاء حساب جديد'
                                 : getStr('signup'),
-                            style: const TextStyle(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w900,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.w900),
                           ),
                         ),
                       ],

@@ -21,70 +21,101 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _screens = [
       HomeScreen(userData: widget.userData),
-      const PlaceholderScreen(title: 'المفضلة'),
-      const PlaceholderScreen(title: 'السلة'),
-      const PlaceholderScreen(title: 'الإعدادات'),
+      const PlaceholderScreen(title: 'المفضلة', icon: Icons.favorite_rounded),
+      const PlaceholderScreen(
+        title: 'السلة',
+        icon: Icons.shopping_cart_rounded,
+      ),
+      const PlaceholderScreen(title: 'الإعدادات', icon: Icons.settings_rounded),
       ProfileScreen(userData: widget.userData),
     ];
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: _screens),
-      bottomNavigationBar: Container(
+      backgroundColor: AppColors.background,
+      body: Stack(
+        children: [
+          IndexedStack(index: _selectedIndex, children: _screens),
+          Positioned(left: 0, right: 0, bottom: 0, child: _buildBottomBar()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomBar() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      height: 72,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.1),
+            blurRadius: 30,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(0, Icons.home_rounded, 'الرئيسية'),
+          _buildNavItem(1, Icons.favorite_rounded, 'المفضلة'),
+          _buildNavItem(2, Icons.shopping_cart_rounded, 'السلة'),
+          _buildNavItem(3, Icons.settings_rounded, 'الاعدادات'),
+          _buildNavItem(4, Icons.person_rounded, 'البروفايل'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    final bool isSelected = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 20,
-              offset: const Offset(0, -5),
-            ),
-          ],
+          color: isSelected
+              ? AppColors.primary.withOpacity(0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: Colors.grey.withOpacity(0.5),
-          selectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 12,
-          ),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded),
-              label: 'الرئيسية',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected
+                  ? AppColors.primary
+                  : AppColors.textSecondary.withOpacity(0.5),
+              size: 26,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_rounded),
-              label: 'المفضلة',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_rounded),
-              label: 'السلة',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings_rounded),
-              label: 'الإعدادات',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              label: 'البروفايل',
-            ),
+            if (isSelected) ...[
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -94,40 +125,44 @@ class _MainScreenState extends State<MainScreen> {
 
 class PlaceholderScreen extends StatelessWidget {
   final String title;
-  const PlaceholderScreen({super.key, required this.title});
+  final IconData icon;
+  const PlaceholderScreen({super.key, required this.title, required this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-      ),
+      backgroundColor: AppColors.background,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.construction_rounded,
-              size: 100,
-              color: AppColors.primary.withOpacity(0.2),
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.05),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                size: 80,
+                color: AppColors.primary.withOpacity(0.5),
+              ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
             Text(
-              'صفحة $title قيد التطوير',
+              title,
               style: const TextStyle(
-                fontSize: 18,
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'هذه الصفحة قيد التطوير حالياً',
+              style: TextStyle(
+                fontSize: 16,
+                color: AppColors.textSecondary.withOpacity(0.7),
               ),
             ),
           ],
