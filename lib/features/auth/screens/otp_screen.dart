@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/localization/app_localizations.dart';
-import '../../home/screens/home_screen.dart';
+import '../../home/screens/main_screen.dart';
 import '../../../core/database/database_helper.dart';
 import '../../../core/theme/app_colors.dart';
 
@@ -55,7 +55,7 @@ class _OtpScreenState extends State<OtpScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(userData: widget.userData),
+          builder: (context) => MainScreen(userData: widget.userData),
         ),
         (route) => false,
       );

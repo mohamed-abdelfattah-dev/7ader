@@ -172,38 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            _buildProfileAvatar(context),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileAvatar(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(userData: widget.userData),
-        ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: const LinearGradient(
-            colors: [AppColors.primary, AppColors.secondary],
-          ),
-        ),
-        child: const CircleAvatar(
-          radius: 24,
-          backgroundColor: Colors.white,
-          child: CustomImage(
-            imageUrl: 'assets/images/imag_app_profile.jpeg',
-            borderRadius: 24,
-            width: 48,
-            height: 48,
-          ),
         ),
       ),
     );

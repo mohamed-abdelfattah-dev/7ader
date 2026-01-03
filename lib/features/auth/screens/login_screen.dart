@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/database/database_helper.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../home/screens/home_screen.dart';
+import '../../home/screens/main_screen.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,6 +11,10 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
+ 
+
+ 
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
@@ -36,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, second) =>
-                HomeScreen(userData: user),
+                MainScreen(userData: user),
             transitionsBuilder: (context, animation, second, child) =>
                 FadeTransition(opacity: animation, child: child),
           ),
